@@ -1,20 +1,24 @@
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.SQLException;
+import java.sql.*;
 
 // Press Shift twice to open the Search Everywhere dialog and type `show whitespaces`,
 // then press Enter. You can now see whitespace characters in your code.
 public class Main {
-    static String userName="root";
-    static String password="1453";
-    static String dbUrl="jdbc:mysql://localhost:3306/world";
+
    public static void main(String[] args) throws SQLException {
        Connection connection = null;
+       DbHelper helper =new DbHelper();
+       Statement statement=null;
+       ResultSet resultSet;
        try{
-           connection = DriverManager.getConnection(dbUrl,userName,password);
-           System.out.println("Connection is done.");
+
+           connection = helper.getConnection();
+           statement = connection.createStatement();
+           resultSet = statement.executeQuery("SELECT code,name,Continent,region FROM country");
+           while(resultSet.next()){
+               System.out.println(resultSet.getString("name"));
+           }
        }catch (SQLException exception){
-           System.out.println(exception.getMessage());
+           helper.showErrorMessage(exception);
 
        }finally {
            connection.close();
