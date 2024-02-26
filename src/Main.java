@@ -12,19 +12,22 @@ public class Main {
          *PrepareStatment--Crate a SQL to insert
          */
         PreparedStatement statement = null;
-
+        ResultSet resultSet;
         try {
-
             connection = helper.getConnection();
-            statement = connection.prepareStatement
-                    ("insert into city (Name,CountryCode,District,Population) values('Sahil','AZE','Sahil',50000)");
+            String sql = "delete from city  where id=4082";
+            statement = connection.prepareStatement(sql);
+            statement.setInt(1,4082);
+
            //Start button for code||
-            statement.executeUpdate();
-            System.out.println("Info added ; ");
+           int result =  statement.executeUpdate();
+            System.out.println("Info deleted : ");
+
         } catch (SQLException exception) {
             helper.showErrorMessage(exception);
 
         } finally {
+            statement.close();
             connection.close();
         }
 
@@ -59,4 +62,62 @@ public class Main {
         }
 
     }
+    public static void insertData() throws SQLException{
+        Connection connection = null;
+        DbHelper helper = new DbHelper();
+        /**
+         *PrepareStatment--Crate a SQL to insert
+         */
+        PreparedStatement statement = null;
+
+        try {
+
+            connection = helper.getConnection();
+            String sql = "insert into city (Name,CountryCode,District,Population) values(?,?,?,?)";
+            statement = connection.prepareStatement
+                    (sql);
+            statement.setString(1,"Sahil 2");
+            statement.setString(2,"AZE");
+            statement.setString(3,"Azerbaijan");
+            statement.setInt(4,50000);
+            //Start button for code||
+            int result =  statement.executeUpdate();
+            System.out.println("Info added : ");
+
+        } catch (SQLException exception) {
+            helper.showErrorMessage(exception);
+
+        } finally {
+            statement.close();
+            connection.close();
+        }
+
+    }
+    public void updateData() throws SQLException{
+        Connection connection = null;
+        DbHelper helper = new DbHelper();
+        /**
+         *PrepareStatment--Crate a SQL to insert
+         */
+        PreparedStatement statement = null;
+        ResultSet resultSet;
+        try {
+            connection = helper.getConnection();
+            String sql = "update city set population = 800000 ,district='Azerbaijan' where id=4082";
+            statement = connection.prepareStatement(sql);
+            statement.setInt(1,4082);
+            //Start button for code||
+            int result =  statement.executeUpdate();
+            System.out.println("Info updated : ");
+
+        } catch (SQLException exception) {
+            helper.showErrorMessage(exception);
+
+        } finally {
+            statement.close();
+            connection.close();
+        }
+
+    }
+
 }
